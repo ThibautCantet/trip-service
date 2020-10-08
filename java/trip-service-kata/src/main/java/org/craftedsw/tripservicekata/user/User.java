@@ -5,15 +5,23 @@ import java.util.List;
 
 import org.craftedsw.tripservicekata.trip.Trip;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+@Entity
 public class User {
 
-	private List<Trip> trips = new ArrayList<Trip>();
-	private List<User> friends = new ArrayList<User>();
-	
-	public List<User> getFriends() {
-		return friends;
-	}
-	
+	@Id
+	private Integer id;
+
+	@ManyToMany(mappedBy = "trips")
+	private final List<Trip> trips = new ArrayList<Trip>();
+
+	@ManyToMany(mappedBy = "frends")
+	private final List<User> friends = new ArrayList<User>();
+
+
 	public void addFriend(User user) {
 		friends.add(user);
 	}
@@ -21,9 +29,12 @@ public class User {
 	public void addTrip(Trip trip) {
 		trips.add(trip);
 	}
-	
-	public List<Trip> trips() {
-		return trips;
+
+	public List<User> getFriends() {
+		return friends;
 	}
 
+	public List<Trip> getTrips() {
+		return trips;
+	}
 }

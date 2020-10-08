@@ -1,6 +1,5 @@
 package org.craftedsw.tripservicekata.trip;
 
-import org.craftedsw.tripservicekata.exception.UserNotLoggedInException;
 import org.craftedsw.tripservicekata.user.User;
 import org.craftedsw.tripservicekata.user.UserSession;
 import org.springframework.http.HttpStatus;
@@ -15,6 +14,12 @@ import java.util.List;
 @RestController
 public class TripController {
 
+    private final TripDAO tripDAO;
+
+    public TripController(TripDAO tripDAO) {
+        this.tripDAO = tripDAO;
+    }
+
     @GetMapping("/api/trip/user/")
     public ResponseEntity<List<Trip>> getTripsByUser(@RequestBody User user) {
         List<Trip> tripList = new ArrayList<Trip>();
@@ -28,7 +33,7 @@ public class TripController {
                 }
             }
             if (isFriend) {
-                tripList = TripDAO.findTripsByUser(user);
+                tripList = tripDAO.findTripsByUser(user);
             }
             return new ResponseEntity<>(tripList, HttpStatus.OK);
         } else {
