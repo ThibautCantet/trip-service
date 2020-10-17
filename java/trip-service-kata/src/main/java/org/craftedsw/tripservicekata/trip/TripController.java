@@ -1,5 +1,7 @@
 package org.craftedsw.tripservicekata.trip;
 
+import org.craftedsw.tripservicekata.email.Email;
+import org.craftedsw.tripservicekata.email.EmailService;
 import org.craftedsw.tripservicekata.user.User;
 import org.craftedsw.tripservicekata.user.UserSession;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,8 @@ public class TripController {
             if (isFriend) {
                 tripList = tripDAO.findTripsByUser(user);
             }
+            final EmailService emailService = new EmailService();
+            emailService.send(new Email(user.getName(), tripList.size()));
             return new ResponseEntity<>(tripList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

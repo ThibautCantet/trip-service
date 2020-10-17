@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.craftedsw.tripservicekata.trip.Trip;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -21,6 +22,8 @@ public class User {
 	@ManyToMany(mappedBy = "frends")
 	private final List<User> friends = new ArrayList<User>();
 
+	@Column
+	private String name;
 
 	public void addFriend(User user) {
 		friends.add(user);
@@ -36,5 +39,9 @@ public class User {
 
 	public List<Trip> getTrips() {
 		return trips;
+	}
+
+	public String getName() {
+		return name;
 	}
 }
