@@ -15,6 +15,7 @@ public class Calculator {
             separator = matcher.group(1);
         }
 
+
         String[] tab = numbers.split("\\\n");
 
         if (tab.length > 1) {
