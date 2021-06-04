@@ -2,6 +2,7 @@ package org.craftedsw.tripservicekata.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.craftedsw.tripservicekata.trip.Trip;
 
@@ -28,7 +29,8 @@ public class User {
 	public User() {
 	}
 
-	public User(String name) {
+	public User(int id, String name) {
+		this.id = id;
 		this.name = name;
 	}
 
@@ -50,5 +52,22 @@ public class User {
 
 	public String getName() {
 		return name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		User user = (User) o;
+		return Objects.equals(id, user.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
 	}
 }

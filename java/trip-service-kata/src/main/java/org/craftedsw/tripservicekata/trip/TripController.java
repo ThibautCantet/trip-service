@@ -26,7 +26,7 @@ public class TripController {
     }
 
     @GetMapping("/api/trip/user/")
-    public ResponseEntity<List<Trip>> getTripsByUser(@RequestBody User user) {
+    public ResponseEntity<Float> getTripsPriceByUser(@RequestBody User user) {
         List<Trip> tripList = new ArrayList<Trip>();
         User loggedUser = userSessionProvider.getLoggedUser();
         boolean isFriend = false;
@@ -38,10 +38,15 @@ public class TripController {
                 }
             }
             if (isFriend) {
-                tripList = tripDAO.findTripsByUser(user);
+                tripList = tripDAO.findTripsByUserId(user.getId());
+
                 emailService.send(new Email(user.getName(), tripList.size()));
             }
-            return new ResponseEntity<>(tripList, HttpStatus.OK);
+            Float tripsPrice = tripList.stream()
+                    .map(Trip::getPrice)
+                    .reduce(Float::sum)
+                    .orElse(0f);
+            return new ResponseEntity<>(tripsPrice, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

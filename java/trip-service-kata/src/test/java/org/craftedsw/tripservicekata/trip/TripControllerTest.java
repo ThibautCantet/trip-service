@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +34,7 @@ class TripControllerTest {
     }
 
     @Nested
-    class GetTripByUser {
+    class GetTripsPriceByUser {
         @Test
         void should_return_internal_server_error_when_loggedUser_is_not_defined() {
             // given
@@ -41,11 +42,11 @@ class TripControllerTest {
             User user = new User();
 
             // when
-            final ResponseEntity<List<Trip>> tripsByUser = tripController.getTripsByUser(user);
+            final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(user);
 
 
             // then
-            assertThat(tripsByUser.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+            assertThat(tripsPriceByUser.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         @Nested
@@ -63,17 +64,17 @@ class TripControllerTest {
             @Test
             void should_return_internal_200_with_empty_list_of_trip() {
                 // when
-                final ResponseEntity<List<Trip>> tripsByUser = tripController.getTripsByUser(user);
+                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(user);
 
                 // then
-                assertThat(tripsByUser.getStatusCode()).isEqualTo(HttpStatus.OK);
-                assertThat(tripsByUser.getBody()).isEqualTo(emptyList());
+                assertThat(tripsPriceByUser.getStatusCode()).isEqualTo(HttpStatus.OK);
+                assertThat(tripsPriceByUser.getBody()).isEqualTo(0);
             }
 
             @Test
             void should_return_not_sent_email() {
                 // when
-                tripController.getTripsByUser(user);
+                tripController.getTripsPriceByUser(user);
 
                 // then
                 verify(emailService, never()).send(any());
@@ -90,33 +91,33 @@ class TripControllerTest {
             void setUp() {
                 final User loggedUser = new User();
                 when(userSessionProvider.getLoggedUser()).thenReturn(loggedUser);
-                user = new User("toto");
+                user = new User(42, "toto");
 
                 final User otherFriend = new User();
                 this.user.addFriend(otherFriend);
                 this.user.addFriend(loggedUser);
 
-                trips = singletonList(new Trip());
-                when(tripDao.findTripsByUser(this.user)).thenReturn(trips);
+                trips = asList(new Trip(10f), new Trip(15f));
+                when(tripDao.findTripsByUserId(42)).thenReturn(trips);
             }
 
             @Test
-            void should_return_internal_200_with_list_of_trips() {
+            void should_return_internal_200_with_sum_of_trips_price() {
                 // when
-                final ResponseEntity<List<Trip>> tripsByUser = tripController.getTripsByUser(user);
+                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(user);
 
                 // then
-                assertThat(tripsByUser.getStatusCode()).isEqualTo(HttpStatus.OK);
-                assertThat(tripsByUser.getBody()).isEqualTo(trips);
+                assertThat(tripsPriceByUser.getStatusCode()).isEqualTo(HttpStatus.OK);
+                assertThat(tripsPriceByUser.getBody()).isEqualTo(25f);
             }
 
             @Test
             void should_return_send_an_email_with_the_user_name_and_trips_count() {
                 // when
-                tripController.getTripsByUser(user);
+                tripController.getTripsPriceByUser(user);
 
                 // then
-                final Email expectedSentEmail = new Email("toto", 1);
+                final Email expectedSentEmail = new Email("toto", 2);
                 ArgumentCaptor<Email> emailArgumentCaptor = ArgumentCaptor.forClass(Email.class);
                 verify(emailService).send(emailArgumentCaptor.capture());
                 assertThat(emailArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedSentEmail);
