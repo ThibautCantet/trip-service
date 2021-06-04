@@ -13,4 +13,15 @@ public class Trip {
 
     @Column
     private User user;
+
+    @Column
+    private Float price;
+
+    public Trip(float price) {
+        this.price = price;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
 }
