@@ -38,7 +38,7 @@ public class TripController {
                 }
             }
             if (isFriend) {
-                tripList = tripDAO.findTripsByUser(user);
+                tripList = tripDAO.findTripsByUserId(user.getId());
                 emailService.send(new Email(user.getName(), tripList.size()));
             }
             return new ResponseEntity<>(tripList, HttpStatus.OK);

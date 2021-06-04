@@ -90,14 +90,14 @@ class TripControllerTest {
             void setUp() {
                 final User loggedUser = new User();
                 when(userSessionProvider.getLoggedUser()).thenReturn(loggedUser);
-                user = new User("toto");
+                user = new User(42, "toto");
 
                 final User otherFriend = new User();
                 this.user.addFriend(otherFriend);
                 this.user.addFriend(loggedUser);
 
                 trips = singletonList(new Trip());
-                when(tripDao.findTripsByUser(this.user)).thenReturn(trips);
+                when(tripDao.findTripsByUserId(42)).thenReturn(trips);
             }
 
             @Test
