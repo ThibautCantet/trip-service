@@ -1,8 +1,9 @@
 package org.craftedsw.tripservicekata.user;
 
 import org.craftedsw.tripservicekata.exception.CollaboratorCallException;
+import org.craftedsw.tripservicekata.trip.UserSessionProvider;
 
-public class UserSession {
+public class UserSession implements UserSessionProvider {
 
 	private static final UserSession userSession = new UserSession();
 	
@@ -13,6 +14,7 @@ public class UserSession {
 		return userSession;
 	}
 
+	@Override
 	public User getLoggedUser() {
 		throw new CollaboratorCallException(
 				"UserSession.getLoggedUser() should not be called in an unit test");
