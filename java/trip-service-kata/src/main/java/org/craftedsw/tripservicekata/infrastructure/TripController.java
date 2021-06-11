@@ -19,8 +19,8 @@ public class TripController {
     }
 
     @GetMapping("/api/trip/user/")
-    public ResponseEntity<Float> getTripsPriceByUser(@RequestBody User user) {
-        Float tripsPrice = tripService.getTripsPriceByUser(user);
+    public ResponseEntity<Float> getTripsPriceByUser(@RequestBody JpaUser user) {
+        Float tripsPrice = tripService.getTripsPriceByUser(user.convert());
 
         if (tripsPrice == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

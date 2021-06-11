@@ -1,30 +1,30 @@
-package org.craftedsw.tripservicekata.infrastructure;
+package org.craftedsw.tripservicekata.domain;
+
+import org.craftedsw.tripservicekata.infrastructure.JpaUser;
+import org.craftedsw.tripservicekata.infrastructure.Trip;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
-@Entity
 public class User {
 
-	@Id
 	private Integer id;
 
-	@ManyToMany(mappedBy = "trips")
-	private final List<Trip> trips = new ArrayList<Trip>();
+	private List<Trip> trips = new ArrayList<Trip>();
 
-	@ManyToMany(mappedBy = "frends")
-	private final List<User> friends = new ArrayList<User>();
+	private List<User> friends = new ArrayList<User>();
 
-	@Column
 	private String name;
 
 	public User() {
+	}
+
+	public User(Integer id, String name, List<User> friends, List<Trip> trips) {
+		this.id = id;
+		this.name = name;
+		this.friends = friends;
+		this.trips = trips;
 	}
 
 	public User(int id, String name) {

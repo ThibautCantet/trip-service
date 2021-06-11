@@ -1,7 +1,5 @@
 package org.craftedsw.tripservicekata.infrastructure;
 
-import org.craftedsw.tripservicekata.infrastructure.User;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,7 +10,7 @@ public class Trip {
     private Integer id;
 
     @Column
-    private User user;
+    private JpaUser user;
 
     @Column
     private Float price;

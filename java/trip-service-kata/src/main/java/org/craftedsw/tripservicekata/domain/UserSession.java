@@ -1,7 +1,5 @@
 package org.craftedsw.tripservicekata.domain;
 
-import org.craftedsw.tripservicekata.infrastructure.User;
-
 public class UserSession implements UserSessionProvider {
 
 	private static final UserSession userSession = new UserSession();
