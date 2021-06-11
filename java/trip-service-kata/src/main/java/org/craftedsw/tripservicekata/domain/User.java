@@ -67,4 +67,8 @@ public class User {
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+
+	public boolean isFriendWith(User otherUser) {
+		return friends.contains(otherUser);
+	}
 }

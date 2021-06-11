@@ -1,6 +1,5 @@
 package org.craftedsw.tripservicekata.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TripService {
@@ -17,24 +16,18 @@ public class TripService {
 
     public Float getTripsPriceByUser(User user) {
         User loggedUser = userSessionProvider.getLoggedUser();
-        boolean isFriend = false;
         if (loggedUser != null) {
-            for (User friend : user.getFriends()) {
-                if (friend.equals(loggedUser)) {
-                    isFriend = true;
-                    break;
-                }
-            }
-            List<Trip> tripList = new ArrayList<>();
-            if (isFriend) {
-                tripList = tripRepository.findTripsByUserId(user.getId());
+            if (user.isFriendWith(loggedUser)) {
+                List<Trip> tripList = tripRepository.findTripsByUserId(user.getId());
+
+                final Trips trips = new Trips(tripList);
+                final Float tripsPrice = trips.calculatePrice();
 
                 emailService.send(new Email(user.getName(), tripList.size()));
+
+                return tripsPrice;
             }
-            return tripList.stream()
-                    .map(Trip::getPrice)
-                    .reduce(Float::sum)
-                    .orElse(0f);
+            return 0f;
 
         }
         return null;
