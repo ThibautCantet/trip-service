@@ -1,4 +1,4 @@
-package org.craftedsw.tripservicekata.exception;
+package org.craftedsw.tripservicekata.domain;
 
 public class CollaboratorCallException extends RuntimeException {
 

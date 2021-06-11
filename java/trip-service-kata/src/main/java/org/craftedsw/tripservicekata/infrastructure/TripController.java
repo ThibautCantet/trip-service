@@ -1,7 +1,8 @@
-package org.craftedsw.tripservicekata.trip;
+package org.craftedsw.tripservicekata.infrastructure;
 
-import org.craftedsw.tripservicekata.email.EmailService;
-import org.craftedsw.tripservicekata.user.User;
+import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
+import org.craftedsw.tripservicekata.domain.TripService;
+import org.craftedsw.tripservicekata.domain.UserSessionProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

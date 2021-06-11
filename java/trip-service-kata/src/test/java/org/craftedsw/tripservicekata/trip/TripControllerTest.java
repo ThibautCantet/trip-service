@@ -1,8 +1,12 @@
 package org.craftedsw.tripservicekata.trip;
 
-import org.craftedsw.tripservicekata.email.Email;
-import org.craftedsw.tripservicekata.email.EmailService;
-import org.craftedsw.tripservicekata.user.User;
+import org.craftedsw.tripservicekata.domain.UserSessionProvider;
+import org.craftedsw.tripservicekata.infrastructure.Trip;
+import org.craftedsw.tripservicekata.infrastructure.email.Email;
+import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
+import org.craftedsw.tripservicekata.infrastructure.TripController;
+import org.craftedsw.tripservicekata.infrastructure.TripDAO;
+import org.craftedsw.tripservicekata.infrastructure.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 

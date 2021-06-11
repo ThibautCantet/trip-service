@@ -1,8 +1,10 @@
-package org.craftedsw.tripservicekata.trip;
+package org.craftedsw.tripservicekata.domain;
 
-import org.craftedsw.tripservicekata.email.Email;
-import org.craftedsw.tripservicekata.email.EmailService;
-import org.craftedsw.tripservicekata.user.User;
+import org.craftedsw.tripservicekata.infrastructure.email.Email;
+import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
+import org.craftedsw.tripservicekata.infrastructure.TripDAO;
+import org.craftedsw.tripservicekata.infrastructure.Trip;
+import org.craftedsw.tripservicekata.infrastructure.User;
 
 import java.util.ArrayList;
 import java.util.List;
