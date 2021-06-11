@@ -1,4 +1,8 @@
-package org.craftedsw.tripservicekata.domain;
+package org.craftedsw.tripservicekata.infrastructure;
+
+import org.craftedsw.tripservicekata.domain.CollaboratorCallException;
+import org.craftedsw.tripservicekata.domain.User;
+import org.craftedsw.tripservicekata.domain.UserSessionProvider;
 
 public class UserSession implements UserSessionProvider {
 
