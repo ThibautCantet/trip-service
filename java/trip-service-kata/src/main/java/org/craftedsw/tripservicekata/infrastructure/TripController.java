@@ -1,7 +1,7 @@
 package org.craftedsw.tripservicekata.infrastructure;
 
 import org.craftedsw.tripservicekata.domain.TripRepository;
-import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
+import org.craftedsw.tripservicekata.infrastructure.email.CustomEmailService;
 import org.craftedsw.tripservicekata.domain.TripService;
 import org.craftedsw.tripservicekata.domain.UserSessionProvider;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ public class TripController {
 
     private final TripService tripService;
 
-    public TripController(TripRepository tripRepository, UserSessionProvider userSessionProvider, EmailService emailService) {
+    public TripController(TripRepository tripRepository, UserSessionProvider userSessionProvider, CustomEmailService emailService) {
         this.tripService = new TripService(userSessionProvider, tripRepository, emailService);
     }
 

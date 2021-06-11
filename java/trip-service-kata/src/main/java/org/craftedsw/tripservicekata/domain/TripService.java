@@ -1,8 +1,5 @@
 package org.craftedsw.tripservicekata.domain;
 
-import org.craftedsw.tripservicekata.infrastructure.email.Email;
-import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
-
 import java.util.ArrayList;
 import java.util.List;
 

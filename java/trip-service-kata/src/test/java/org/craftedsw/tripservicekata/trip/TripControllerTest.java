@@ -4,9 +4,8 @@ import org.craftedsw.tripservicekata.domain.Trip;
 import org.craftedsw.tripservicekata.domain.TripRepository;
 import org.craftedsw.tripservicekata.domain.User;
 import org.craftedsw.tripservicekata.domain.UserSessionProvider;
-import org.craftedsw.tripservicekata.infrastructure.JpaTrip;
-import org.craftedsw.tripservicekata.infrastructure.email.Email;
-import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
+import org.craftedsw.tripservicekata.domain.Email;
+import org.craftedsw.tripservicekata.infrastructure.email.CustomEmailService;
 import org.craftedsw.tripservicekata.infrastructure.TripController;
 import org.craftedsw.tripservicekata.infrastructure.JpaUser;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,13 +26,13 @@ class TripControllerTest {
     private TripController tripController;
     private TripRepository tripRepository;
     private UserSessionProvider userSessionProvider;
-    private EmailService emailService;
+    private CustomEmailService emailService;
 
     @BeforeEach
     void setUp() {
         tripRepository = mock(TripRepository.class);
         userSessionProvider = mock(UserSessionProvider.class);
-        emailService = mock(EmailService.class);
+        emailService = mock(CustomEmailService.class);
         tripController = new TripController(tripRepository, userSessionProvider, emailService);
     }
 

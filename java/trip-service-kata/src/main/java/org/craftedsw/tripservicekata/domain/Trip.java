@@ -1,6 +1,5 @@
 package org.craftedsw.tripservicekata.domain;
 
-
 public class Trip {
     private Integer id;
 
