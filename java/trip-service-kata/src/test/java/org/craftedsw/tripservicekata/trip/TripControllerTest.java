@@ -1,12 +1,13 @@
 package org.craftedsw.tripservicekata.trip;
 
+import org.craftedsw.tripservicekata.domain.Trip;
+import org.craftedsw.tripservicekata.domain.TripRepository;
 import org.craftedsw.tripservicekata.domain.User;
 import org.craftedsw.tripservicekata.domain.UserSessionProvider;
-import org.craftedsw.tripservicekata.infrastructure.Trip;
+import org.craftedsw.tripservicekata.infrastructure.JpaTrip;
 import org.craftedsw.tripservicekata.infrastructure.email.Email;
 import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
 import org.craftedsw.tripservicekata.infrastructure.TripController;
-import org.craftedsw.tripservicekata.infrastructure.TripDAO;
 import org.craftedsw.tripservicekata.infrastructure.JpaUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -24,16 +25,16 @@ import static org.mockito.Mockito.*;
 class TripControllerTest {
 
     private TripController tripController;
-    private TripDAO tripDao;
+    private TripRepository tripRepository;
     private UserSessionProvider userSessionProvider;
     private EmailService emailService;
 
     @BeforeEach
     void setUp() {
-        tripDao = mock(TripDAO.class);
+        tripRepository = mock(TripRepository.class);
         userSessionProvider = mock(UserSessionProvider.class);
         emailService = mock(EmailService.class);
-        tripController = new TripController(tripDao, userSessionProvider, emailService);
+        tripController = new TripController(tripRepository, userSessionProvider, emailService);
     }
 
     @Nested
@@ -101,7 +102,7 @@ class TripControllerTest {
                 this.jpaUser.addFriend(new JpaUser(loggedUser));
 
                 trips = asList(new Trip(10f), new Trip(15f));
-                when(tripDao.findTripsByUserId(42)).thenReturn(trips);
+                when(tripRepository.findTripsByUserId(42)).thenReturn(trips);
             }
 
             @Test

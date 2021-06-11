@@ -1,5 +1,6 @@
 package org.craftedsw.tripservicekata.infrastructure;
 
+import org.craftedsw.tripservicekata.domain.TripRepository;
 import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
 import org.craftedsw.tripservicekata.domain.TripService;
 import org.craftedsw.tripservicekata.domain.UserSessionProvider;
@@ -14,8 +15,8 @@ public class TripController {
 
     private final TripService tripService;
 
-    public TripController(TripDAO tripDAO, UserSessionProvider userSessionProvider, EmailService emailService) {
-        this.tripService = new TripService(userSessionProvider, tripDAO, emailService);
+    public TripController(TripRepository tripRepository, UserSessionProvider userSessionProvider, EmailService emailService) {
+        this.tripService = new TripService(userSessionProvider, tripRepository, emailService);
     }
 
     @GetMapping("/api/trip/user/")

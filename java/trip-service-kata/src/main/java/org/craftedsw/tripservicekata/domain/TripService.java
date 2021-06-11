@@ -2,8 +2,6 @@ package org.craftedsw.tripservicekata.domain;
 
 import org.craftedsw.tripservicekata.infrastructure.email.Email;
 import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
-import org.craftedsw.tripservicekata.infrastructure.TripDAO;
-import org.craftedsw.tripservicekata.infrastructure.Trip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +9,12 @@ import java.util.List;
 public class TripService {
 
     private final UserSessionProvider userSessionProvider;
-    private final TripDAO tripDAO;
+    private final TripRepository tripRepository;
     private final EmailService emailService;
 
-    public TripService(UserSessionProvider userSessionProvider, TripDAO tripDAO, EmailService emailService) {
+    public TripService(UserSessionProvider userSessionProvider, TripRepository jpaTripRepository, EmailService emailService) {
         this.userSessionProvider = userSessionProvider;
-        this.tripDAO = tripDAO;
+        this.tripRepository = jpaTripRepository;
         this.emailService = emailService;
     }
 
@@ -32,7 +30,7 @@ public class TripService {
             }
             List<Trip> tripList = new ArrayList<>();
             if (isFriend) {
-                tripList = tripDAO.findTripsByUserId(user.getId());
+                tripList = tripRepository.findTripsByUserId(user.getId());
 
                 emailService.send(new Email(user.getName(), tripList.size()));
             }

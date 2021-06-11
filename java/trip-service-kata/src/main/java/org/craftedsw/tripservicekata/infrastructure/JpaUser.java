@@ -19,7 +19,7 @@ public class JpaUser {
 	private Integer id;
 
 	@ManyToMany(mappedBy = "trips")
-	private final List<Trip> trips = new ArrayList<Trip>();
+	private final List<JpaTrip> trips = new ArrayList<JpaTrip>();
 
 	@ManyToMany(mappedBy = "frends")
 	private final List<JpaUser> friends = new ArrayList<JpaUser>();
@@ -44,7 +44,7 @@ public class JpaUser {
 		friends.add(jpaUser);
 	}
 
-	public void addTrip(Trip trip) {
+	public void addTrip(JpaTrip trip) {
 		trips.add(trip);
 	}
 
@@ -52,7 +52,7 @@ public class JpaUser {
 		return friends;
 	}
 
-	public List<Trip> getTrips() {
+	public List<JpaTrip> getTrips() {
 		return trips;
 	}
 

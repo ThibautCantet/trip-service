@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface TripDAO extends CrudRepository<Trip, Integer> {
+public interface JpaTripDAO extends CrudRepository<JpaTrip, Integer> {
 
-	List<Trip> findTripsByUserId(int userId);
+	List<JpaTrip> findTripsByUserId(int userId);
 	
 }
