@@ -1,7 +1,5 @@
 package org.craftedsw.tripservicekata.domain;
 
-import org.craftedsw.tripservicekata.infrastructure.repository.jpa.JpaTrip;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +8,7 @@ public class User {
 
 	private Integer id;
 
-	private List<JpaTrip> trips = new ArrayList<JpaTrip>();
+	private List<Trip> trips = new ArrayList<Trip>();
 
 	private List<User> friends = new ArrayList<User>();
 
@@ -19,7 +17,7 @@ public class User {
 	public User() {
 	}
 
-	public User(Integer id, String name, List<User> friends, List<JpaTrip> trips) {
+	public User(Integer id, String name, List<User> friends, List<Trip> trips) {
 		this.id = id;
 		this.name = name;
 		this.friends = friends;
@@ -35,7 +33,7 @@ public class User {
 		friends.add(user);
 	}
 
-	public void addTrip(JpaTrip trip) {
+	public void addTrip(Trip trip) {
 		trips.add(trip);
 	}
 
@@ -43,7 +41,7 @@ public class User {
 		return friends;
 	}
 
-	public List<JpaTrip> getTrips() {
+	public List<Trip> getTrips() {
 		return trips;
 	}
 
