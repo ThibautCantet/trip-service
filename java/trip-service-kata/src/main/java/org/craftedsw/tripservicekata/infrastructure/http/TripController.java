@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class TripController {
 
@@ -22,12 +24,12 @@ public class TripController {
 
     @GetMapping("/api/trip/user/")
     public ResponseEntity<Float> getTripsPriceByUser(@RequestBody JpaUser user) {
-        Float tripsPrice = getTripsPriceByUser.execute(user.convert());
+        Optional<Float> tripsPrice = getTripsPriceByUser.execute(user.convert());
 
-        if (tripsPrice == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (tripsPrice.isPresent()) {
+            return new ResponseEntity<>(tripsPrice.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(tripsPrice, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

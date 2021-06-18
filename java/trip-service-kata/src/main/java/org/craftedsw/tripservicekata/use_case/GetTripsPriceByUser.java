@@ -3,6 +3,7 @@ package org.craftedsw.tripservicekata.use_case;
 import org.craftedsw.tripservicekata.domain.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GetTripsPriceByUser {
 
@@ -18,7 +19,7 @@ public class GetTripsPriceByUser {
         this.emailService = emailService;
     }
 
-    public Float execute(User user) {
+    public Optional<Float> execute(User user) {
         User loggedUser = userSessionProvider.getLoggedUser();
         if (loggedUser != null) {
             if (user.isFriendWith(loggedUser)) {
@@ -29,11 +30,11 @@ public class GetTripsPriceByUser {
 
                 emailService.send(new Email(user.getName(), tripList.size()));
 
-                return tripsPrice;
+                return Optional.ofNullable(tripsPrice);
             }
-            return 0f;
+            return Optional.of(0f);
 
         }
-        return null;
+        return Optional.empty();
     }
 }
