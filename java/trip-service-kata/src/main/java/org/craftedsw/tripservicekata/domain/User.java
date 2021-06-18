@@ -1,6 +1,6 @@
 package org.craftedsw.tripservicekata.domain;
 
-import org.craftedsw.tripservicekata.infrastructure.JpaTrip;
+import org.craftedsw.tripservicekata.infrastructure.repository.jpa.JpaTrip;
 
 import java.util.ArrayList;
 import java.util.List;

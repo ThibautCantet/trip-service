@@ -1,4 +1,4 @@
-package org.craftedsw.tripservicekata.infrastructure;
+package org.craftedsw.tripservicekata.infrastructure.repository.jpa;
 
 import java.util.List;
 

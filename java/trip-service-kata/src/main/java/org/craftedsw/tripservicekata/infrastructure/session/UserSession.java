@@ -1,4 +1,4 @@
-package org.craftedsw.tripservicekata.infrastructure;
+package org.craftedsw.tripservicekata.infrastructure.session;
 
 import org.craftedsw.tripservicekata.domain.CollaboratorCallException;
 import org.craftedsw.tripservicekata.domain.User;

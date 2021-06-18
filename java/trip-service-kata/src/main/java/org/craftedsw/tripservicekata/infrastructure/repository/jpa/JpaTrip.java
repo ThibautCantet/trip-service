@@ -1,6 +1,7 @@
-package org.craftedsw.tripservicekata.infrastructure;
+package org.craftedsw.tripservicekata.infrastructure.repository.jpa;
 
 import org.craftedsw.tripservicekata.domain.Trip;
+import org.craftedsw.tripservicekata.infrastructure.repository.jpa.JpaUser;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

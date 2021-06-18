@@ -1,20 +1,24 @@
-package org.craftedsw.tripservicekata.domain;
+package org.craftedsw.tripservicekata.use_case;
+
+import org.craftedsw.tripservicekata.domain.*;
 
 import java.util.List;
 
-public class TripService {
+public class GetTripsPriceByUser {
 
     private final UserSessionProvider userSessionProvider;
     private final TripRepository tripRepository;
     private final EmailService emailService;
 
-    public TripService(UserSessionProvider userSessionProvider, TripRepository jpaTripRepository, EmailService emailService) {
+    public GetTripsPriceByUser(UserSessionProvider userSessionProvider,
+                               TripRepository jpaTripRepository,
+                               EmailService emailService) {
         this.userSessionProvider = userSessionProvider;
         this.tripRepository = jpaTripRepository;
         this.emailService = emailService;
     }
 
-    public Float getTripsPriceByUser(User user) {
+    public Float execute(User user) {
         User loggedUser = userSessionProvider.getLoggedUser();
         if (loggedUser != null) {
             if (user.isFriendWith(loggedUser)) {
