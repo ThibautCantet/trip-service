@@ -1,7 +1,6 @@
 package org.craftedsw.tripservicekata.infrastructure.http;
 
 import org.craftedsw.tripservicekata.domain.User;
-import org.craftedsw.tripservicekata.infrastructure.repository.jpa.JpaTrip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +11,9 @@ public class UserDto {
 
     private Integer id;
 
-    private List<JpaTrip> trips = new ArrayList<JpaTrip>();
+    private List<TripDto> trips = new ArrayList<>();
 
-    private List<UserDto> friends = new ArrayList<UserDto>();
+    private List<UserDto> friends = new ArrayList<>();
 
     private String name;
 
@@ -55,7 +54,7 @@ public class UserDto {
                         .map(UserDto::convert)
                         .collect(Collectors.toList()),
                 trips.stream()
-                        .map(JpaTrip::convert)
+                        .map(TripDto::convert)
                         .collect(Collectors.toList()));
     }
 }

@@ -19,50 +19,13 @@ public class JpaUser {
     private Integer id;
 
     @ManyToMany(mappedBy = "trips")
-    private final List<JpaTrip> trips = new ArrayList<JpaTrip>();
+    private final List<JpaTrip> trips = new ArrayList<>();
 
     @ManyToMany(mappedBy = "frends")
-    private final List<JpaUser> friends = new ArrayList<JpaUser>();
+    private final List<JpaUser> friends = new ArrayList<>();
 
     @Column
     private String name;
-
-    public JpaUser() {
-    }
-
-    public JpaUser(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public JpaUser(User user) {
-        this.id = user.getId();
-        this.name = user.getName();
-    }
-
-    public void addFriend(JpaUser jpaUser) {
-        friends.add(jpaUser);
-    }
-
-    public void addTrip(JpaTrip trip) {
-        trips.add(trip);
-    }
-
-    public List<JpaUser> getFriends() {
-        return friends;
-    }
-
-    public List<JpaTrip> getTrips() {
-        return trips;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getId() {
-        return id;
-    }
 
     @Override
     public boolean equals(Object o) {
