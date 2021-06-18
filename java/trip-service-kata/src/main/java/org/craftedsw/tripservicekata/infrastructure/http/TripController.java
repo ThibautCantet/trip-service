@@ -2,7 +2,6 @@ package org.craftedsw.tripservicekata.infrastructure.http;
 
 import org.craftedsw.tripservicekata.domain.TripRepository;
 import org.craftedsw.tripservicekata.infrastructure.email.CustomEmailService;
-import org.craftedsw.tripservicekata.infrastructure.repository.jpa.JpaUser;
 import org.craftedsw.tripservicekata.use_case.GetTripsPriceByUser;
 import org.craftedsw.tripservicekata.domain.UserSessionProvider;
 import org.springframework.http.HttpStatus;
@@ -23,8 +22,8 @@ public class TripController {
     }
 
     @GetMapping("/api/trip/user/")
-    public ResponseEntity<Float> getTripsPriceByUser(@RequestBody JpaUser user) {
-        Optional<Float> tripsPrice = getTripsPriceByUser.execute(user.convert());
+    public ResponseEntity<Float> getTripsPriceByUser(@RequestBody UserDto userDto) {
+        Optional<Float> tripsPrice = getTripsPriceByUser.execute(userDto.convert());
 
         if (tripsPrice.isPresent()) {
             return new ResponseEntity<>(tripsPrice.get(), HttpStatus.OK);

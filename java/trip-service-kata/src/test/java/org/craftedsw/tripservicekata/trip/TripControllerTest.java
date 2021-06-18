@@ -7,7 +7,7 @@ import org.craftedsw.tripservicekata.domain.UserSessionProvider;
 import org.craftedsw.tripservicekata.domain.Email;
 import org.craftedsw.tripservicekata.infrastructure.email.CustomEmailService;
 import org.craftedsw.tripservicekata.infrastructure.http.TripController;
-import org.craftedsw.tripservicekata.infrastructure.repository.jpa.JpaUser;
+import org.craftedsw.tripservicekata.infrastructure.http.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -42,10 +42,10 @@ class TripControllerTest {
         void should_return_internal_server_error_when_loggedUser_is_not_defined() {
             // given
             when(userSessionProvider.getLoggedUser()).thenReturn(null);
-            JpaUser jpaUser = new JpaUser();
+            UserDto userDto = new UserDto();
 
             // when
-            final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(jpaUser);
+            final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(userDto);
 
 
             // then
@@ -55,19 +55,19 @@ class TripControllerTest {
         @Nested
         class WhenLoggedUserIsDefinedAndLoggedUserIsNotAFriend {
 
-            private JpaUser jpaUser;
+            private UserDto userDto;
 
             @BeforeEach
             void setUp() {
                 User loggedUser = new User();
                 when(userSessionProvider.getLoggedUser()).thenReturn(loggedUser);
-                jpaUser = new JpaUser();
+                userDto = new UserDto();
             }
 
             @Test
             void should_return_internal_200_with_empty_list_of_trip() {
                 // when
-                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(jpaUser);
+                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(userDto);
 
                 // then
                 assertThat(tripsPriceByUser.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -77,7 +77,7 @@ class TripControllerTest {
             @Test
             void should_return_not_sent_email() {
                 // when
-                tripController.getTripsPriceByUser(jpaUser);
+                tripController.getTripsPriceByUser(userDto);
 
                 // then
                 verify(emailService, never()).send(any());
@@ -87,18 +87,18 @@ class TripControllerTest {
         @Nested
         class WhenLoggedUserIsDefinedAndLoggedUserIsAFriend {
 
-            private JpaUser jpaUser;
+            private UserDto userDto;
             private List<Trip> trips;
 
             @BeforeEach
             void setUp() {
                 final User loggedUser = new User(1, "logged");
                 when(userSessionProvider.getLoggedUser()).thenReturn(loggedUser);
-                jpaUser = new JpaUser(42, "toto");
+                userDto = new UserDto(42, "toto");
 
-                final JpaUser otherFriend = new JpaUser();
-                this.jpaUser.addFriend(otherFriend);
-                this.jpaUser.addFriend(new JpaUser(loggedUser));
+                final UserDto otherFriend = new UserDto();
+                this.userDto.addFriend(otherFriend);
+                this.userDto.addFriend(new UserDto(loggedUser));
 
                 trips = asList(new Trip(10f), new Trip(15f));
                 when(tripRepository.findTripsByUserId(42)).thenReturn(trips);
@@ -107,7 +107,7 @@ class TripControllerTest {
             @Test
             void should_return_internal_200_with_sum_of_trips_price() {
                 // when
-                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(jpaUser);
+                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(userDto);
 
                 // then
                 assertThat(tripsPriceByUser.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -117,7 +117,7 @@ class TripControllerTest {
             @Test
             void should_return_send_an_email_with_the_user_name_and_trips_count() {
                 // when
-                tripController.getTripsPriceByUser(jpaUser);
+                tripController.getTripsPriceByUser(userDto);
 
                 // then
                 final Email expectedSentEmail = new Email("toto", 2);
