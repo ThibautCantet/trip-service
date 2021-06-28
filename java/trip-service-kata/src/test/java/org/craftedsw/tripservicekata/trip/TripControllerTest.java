@@ -1,8 +1,9 @@
 package org.craftedsw.tripservicekata.trip;
 
-import org.craftedsw.tripservicekata.email.Email;
-import org.craftedsw.tripservicekata.email.EmailService;
-import org.craftedsw.tripservicekata.user.User;
+import org.craftedsw.tripservicekata.infrastructure.*;
+import org.craftedsw.tripservicekata.use_case.Email;
+import org.craftedsw.tripservicekata.infrastructure.JpaTrip;
+import org.craftedsw.tripservicekata.use_case.UserSessionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -39,10 +38,10 @@ class TripControllerTest {
         void should_return_internal_server_error_when_loggedUser_is_not_defined() {
             // given
             when(userSessionProvider.getLoggedUser()).thenReturn(null);
-            User user = new User();
+            JpaUser jpaUser = new JpaUser();
 
             // when
-            final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(user);
+            final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(jpaUser);
 
 
             // then
@@ -52,19 +51,19 @@ class TripControllerTest {
         @Nested
         class WhenLoggedUserIsDefinedAndLoggedUserIsNotAFriend {
 
-            private User user;
+            private JpaUser jpaUser;
 
             @BeforeEach
             void setUp() {
-                User loggedUser = new User();
-                when(userSessionProvider.getLoggedUser()).thenReturn(loggedUser);
-                user = new User();
+                JpaUser loggedJpaUser = new JpaUser();
+                when(userSessionProvider.getLoggedUser()).thenReturn(loggedJpaUser);
+                jpaUser = new JpaUser();
             }
 
             @Test
-            void should_return_internal_200_with_empty_list_of_trip() {
+            void should_return_internal_200_with_0() {
                 // when
-                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(user);
+                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(jpaUser);
 
                 // then
                 assertThat(tripsPriceByUser.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -74,7 +73,7 @@ class TripControllerTest {
             @Test
             void should_return_not_sent_email() {
                 // when
-                tripController.getTripsPriceByUser(user);
+                tripController.getTripsPriceByUser(jpaUser);
 
                 // then
                 verify(emailService, never()).send(any());
@@ -84,27 +83,27 @@ class TripControllerTest {
         @Nested
         class WhenLoggedUserIsDefinedAndLoggedUserIsAFriend {
 
-            private User user;
-            private List<Trip> trips;
+            private JpaUser jpaUser;
+            private List<JpaTrip> jpaTrips;
 
             @BeforeEach
             void setUp() {
-                final User loggedUser = new User();
-                when(userSessionProvider.getLoggedUser()).thenReturn(loggedUser);
-                user = new User(42, "toto");
+                final JpaUser loggedJpaUser = new JpaUser();
+                when(userSessionProvider.getLoggedUser()).thenReturn(loggedJpaUser);
+                jpaUser = new JpaUser(42, "toto");
 
-                final User otherFriend = new User();
-                this.user.addFriend(otherFriend);
-                this.user.addFriend(loggedUser);
+                final JpaUser otherFriend = new JpaUser();
+                this.jpaUser.addFriend(otherFriend);
+                this.jpaUser.addFriend(loggedJpaUser);
 
-                trips = asList(new Trip(10f), new Trip(15f));
-                when(tripDao.findTripsByUserId(42)).thenReturn(trips);
+                jpaTrips = asList(new JpaTrip(10f), new JpaTrip(15f));
+                when(tripDao.findTripsByUserId(42)).thenReturn(jpaTrips);
             }
 
             @Test
             void should_return_internal_200_with_sum_of_trips_price() {
                 // when
-                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(user);
+                final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(jpaUser);
 
                 // then
                 assertThat(tripsPriceByUser.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -114,7 +113,7 @@ class TripControllerTest {
             @Test
             void should_return_send_an_email_with_the_user_name_and_trips_count() {
                 // when
-                tripController.getTripsPriceByUser(user);
+                tripController.getTripsPriceByUser(jpaUser);
 
                 // then
                 final Email expectedSentEmail = new Email("toto", 2);
