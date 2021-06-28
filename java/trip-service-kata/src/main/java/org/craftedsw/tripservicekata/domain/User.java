@@ -8,9 +8,9 @@ public class User {
 
 	private Integer id;
 
-	private final List<Trip> trips = new ArrayList<Trip>();
+	private List<Trip> trips = new ArrayList<Trip>();
 
-	private final List<User> friends = new ArrayList<User>();
+	private List<User> friends = new ArrayList<User>();
 
 	private String name;
 
@@ -20,6 +20,13 @@ public class User {
 	public User(int id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	public User(Integer id, String name, List<User> friends, List<Trip> trips) {
+		this.id = id;
+		this.name = name;
+		this.friends = friends;
+		this.trips = trips;
 	}
 
 	public void addFriend(User user) {

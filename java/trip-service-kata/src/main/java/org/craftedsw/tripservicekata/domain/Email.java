@@ -1,4 +1,4 @@
-package org.craftedsw.tripservicekata.use_case;
+package org.craftedsw.tripservicekata.domain;
 
 public class Email {
     private final String name;

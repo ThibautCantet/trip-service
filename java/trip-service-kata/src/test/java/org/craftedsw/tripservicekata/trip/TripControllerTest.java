@@ -1,9 +1,15 @@
 package org.craftedsw.tripservicekata.trip;
 
-import org.craftedsw.tripservicekata.infrastructure.*;
-import org.craftedsw.tripservicekata.use_case.Email;
-import org.craftedsw.tripservicekata.infrastructure.JpaTrip;
-import org.craftedsw.tripservicekata.use_case.UserSessionProvider;
+import org.craftedsw.tripservicekata.domain.TripRepository;
+import org.craftedsw.tripservicekata.domain.User;
+import org.craftedsw.tripservicekata.domain.Email;
+import org.craftedsw.tripservicekata.infrastructure.email.EmailService;
+import org.craftedsw.tripservicekata.infrastructure.repository.JpaTrip;
+import org.craftedsw.tripservicekata.domain.UserSessionProvider;
+import org.craftedsw.tripservicekata.infrastructure.http.TripController;
+import org.craftedsw.tripservicekata.infrastructure.repository.JpaUser;
+import org.craftedsw.tripservicekata.infrastructure.repository.SpringJpaTripRepository;
+import org.craftedsw.tripservicekata.infrastructure.repository.TripDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,6 +26,7 @@ import static org.mockito.Mockito.*;
 class TripControllerTest {
 
     private TripController tripController;
+    private TripRepository tripRepository;
     private TripDAO tripDao;
     private UserSessionProvider userSessionProvider;
     private EmailService emailService;
@@ -27,9 +34,10 @@ class TripControllerTest {
     @BeforeEach
     void setUp() {
         tripDao = mock(TripDAO.class);
+        tripRepository = new SpringJpaTripRepository(tripDao);
         userSessionProvider = mock(UserSessionProvider.class);
         emailService = mock(EmailService.class);
-        tripController = new TripController(tripDao, userSessionProvider, emailService);
+        tripController = new TripController(tripRepository, userSessionProvider, emailService);
     }
 
     @Nested
@@ -38,7 +46,7 @@ class TripControllerTest {
         void should_return_internal_server_error_when_loggedUser_is_not_defined() {
             // given
             when(userSessionProvider.getLoggedUser()).thenReturn(null);
-            JpaUser jpaUser = new JpaUser();
+            JpaUser jpaUser = new JpaUser(42, "toto");
 
             // when
             final ResponseEntity<Float> tripsPriceByUser = tripController.getTripsPriceByUser(jpaUser);
@@ -55,8 +63,8 @@ class TripControllerTest {
 
             @BeforeEach
             void setUp() {
-                JpaUser loggedJpaUser = new JpaUser();
-                when(userSessionProvider.getLoggedUser()).thenReturn(loggedJpaUser);
+                User loggedUser = new User();
+                when(userSessionProvider.getLoggedUser()).thenReturn(loggedUser);
                 jpaUser = new JpaUser();
             }
 
@@ -89,7 +97,7 @@ class TripControllerTest {
             @BeforeEach
             void setUp() {
                 final JpaUser loggedJpaUser = new JpaUser();
-                when(userSessionProvider.getLoggedUser()).thenReturn(loggedJpaUser);
+                when(userSessionProvider.getLoggedUser()).thenReturn(loggedJpaUser.convert());
                 jpaUser = new JpaUser(42, "toto");
 
                 final JpaUser otherFriend = new JpaUser();

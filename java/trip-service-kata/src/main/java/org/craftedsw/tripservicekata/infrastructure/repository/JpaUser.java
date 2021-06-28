@@ -1,10 +1,11 @@
-package org.craftedsw.tripservicekata.infrastructure;
+package org.craftedsw.tripservicekata.infrastructure.repository;
 
 import org.craftedsw.tripservicekata.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -71,17 +72,10 @@ public class JpaUser {
 		return Objects.hash(id);
 	}
 
-	public boolean isFriendWith(JpaUser loggedJpaUser) {
-		for (JpaUser friend : this.getFriends()) {
-			if (friend.equals(loggedJpaUser)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	public User convert() {
-		return new User(id, name);
+		return new User(id,
+				name,
+				friends.stream().map(JpaUser::convert).collect(Collectors.toList()),
+				jpaTrips.stream().map(JpaTrip::convert).collect(Collectors.toList()));
 	}
 }

@@ -1,6 +1,7 @@
-package org.craftedsw.tripservicekata.infrastructure;
+package org.craftedsw.tripservicekata.infrastructure.session;
 
-import org.craftedsw.tripservicekata.use_case.UserSessionProvider;
+import org.craftedsw.tripservicekata.domain.User;
+import org.craftedsw.tripservicekata.domain.UserSessionProvider;
 
 public class UserSession implements UserSessionProvider {
 
@@ -14,7 +15,7 @@ public class UserSession implements UserSessionProvider {
 	}
 
 	@Override
-	public JpaUser getLoggedUser() {
+	public User getLoggedUser() {
 		throw new CollaboratorCallException(
 				"UserSession.getLoggedUser() should not be called in an unit test");
 	}
